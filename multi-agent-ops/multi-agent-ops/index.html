@@ -1,0 +1,48 @@
+﻿<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>多 Agent 协同运营自动化系统</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand"><div class="brand-mark">A</div><div><strong>AgentOps</strong><span>协同运营自动化</span></div></div>
+        <nav class="nav">
+          <button class="nav-item active" data-view="dashboard">总览</button>
+          <button class="nav-item" data-view="agents">Agent 团队</button>
+          <button class="nav-item" data-view="tasks">任务队列</button>
+          <button class="nav-item" data-view="automations">自动化</button>
+          <button class="nav-item" data-view="logs">运行日志</button>
+        </nav>
+        <div class="sidebar-footer">
+          <button id="exportData" class="ghost-btn">导出数据</button>
+          <label class="ghost-btn file-btn">导入数据<input id="importData" type="file" accept="application/json" /></label>
+        </div>
+      </aside>
+      <main class="main">
+        <header class="topbar">
+          <div><p class="eyebrow">Operations Command Center</p><h1 id="viewTitle">运营总览</h1></div>
+          <div class="topbar-actions"><button id="seedDemo" class="secondary-btn">重置演示数据</button><button id="runCycle" class="primary-btn">运行一轮调度</button></div>
+        </header>
+        <section id="dashboard" class="view active">
+          <div class="metrics-grid">
+            <article class="metric"><span>活跃 Agent</span><strong id="metricAgents">0</strong></article>
+            <article class="metric"><span>待处理任务</span><strong id="metricPending">0</strong></article>
+            <article class="metric"><span>今日完成</span><strong id="metricDone">0</strong></article>
+            <article class="metric"><span>自动化规则</span><strong id="metricAutomations">0</strong></article>
+          </div>
+          <div class="split-layout"><section class="panel"><div class="panel-head"><h2>协同看板</h2><span id="cycleStatus">等待调度</span></div><div id="pipeline" class="pipeline"></div></section><section class="panel"><div class="panel-head"><h2>近期事件</h2></div><div id="recentLogs" class="log-list compact"></div></section></div>
+        </section>
+        <section id="agents" class="view"><div class="panel"><div class="panel-head"><h2>Agent 团队</h2><button id="addAgent" class="primary-btn small">新增 Agent</button></div><form id="agentForm" class="form-grid hidden"><input name="name" placeholder="Agent 名称" required /><select name="role" required><option value="策略">策略</option><option value="内容">内容</option><option value="数据">数据</option><option value="客服">客服</option><option value="质检">质检</option></select><input name="skills" placeholder="技能，用逗号分隔" required /><button class="primary-btn">保存</button></form><div id="agentGrid" class="agent-grid"></div></div></section>
+        <section id="tasks" class="view"><div class="panel"><div class="panel-head"><h2>任务队列</h2><button id="addTask" class="primary-btn small">新增任务</button></div><form id="taskForm" class="form-grid task-form hidden"><input name="title" placeholder="任务标题" required /><select name="type" required><option value="内容">内容</option><option value="数据">数据</option><option value="客服">客服</option><option value="质检">质检</option><option value="策略">策略</option></select><select name="priority" required><option value="高">高优先级</option><option value="中">中优先级</option><option value="低">低优先级</option></select><input name="description" placeholder="任务描述" required /><button class="primary-btn">保存</button></form><div id="taskList" class="task-list"></div></div></section>
+        <section id="automations" class="view"><div class="panel"><div class="panel-head"><h2>自动化规则</h2><button id="addAutomation" class="primary-btn small">新增规则</button></div><form id="automationForm" class="form-grid automation-form hidden"><input name="name" placeholder="规则名称" required /><select name="trigger" required><option value="pendingHigh">出现高优先级待办</option><option value="idleAgent">存在空闲 Agent</option><option value="qualityNeeded">任务等待质检</option></select><select name="action" required><option value="assignBest">分配最匹配 Agent</option><option value="createQualityTask">创建质检任务</option><option value="notifyOps">记录运营提醒</option></select><button class="primary-btn">保存</button></form><div id="automationList" class="automation-list"></div></div></section>
+        <section id="logs" class="view"><div class="panel"><div class="panel-head"><h2>运行日志</h2><button id="clearLogs" class="secondary-btn small">清空日志</button></div><div id="logList" class="log-list"></div></div></section>
+      </main>
+    </div>
+    <template id="emptyState"><div class="empty-state"><strong>暂无数据</strong><span>添加一条记录或运行演示数据即可开始。</span></div></template>
+    <script src="./app.js"></script>
+  </body>
+</html>
